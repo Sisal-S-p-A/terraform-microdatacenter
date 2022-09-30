@@ -76,7 +76,7 @@ resource "oci_identity_policy" "tenancy" {
 
   name = local.compartment.name
   description = format(
-    "Manage permissions at Tenancy level for compartment %s.",
+    "Manage permissions at tenancy level for compartment %s.",
     local.compartment.name
   )
 
@@ -113,7 +113,7 @@ resource "oci_identity_policy" "admin" {
 
   name = format("%s", local.admins.name)
   description = format(
-    "Manage permissions at compartment level for group %s.",
+    "Grants rights to group %s at compartment level.",
     local.admins.name
   )
 
@@ -134,7 +134,7 @@ resource "oci_identity_policy" "operator" {
 
   name = format("%s", local.operators.name)
   description = format(
-    "Manage permissions at compartment level for group %s.",
+    "Grants rights to group %s at compartment level.",
     local.operators.name
   )
 
@@ -155,7 +155,7 @@ resource "oci_identity_policy" "instance" {
 
   name = format("%s", local.instances.name)
   description = format(
-    "Grants rights to compute instances in dynamic group %s.",
+    "Grants rights to instances group %s at compartment level.",
     local.instances.name
   )
 
