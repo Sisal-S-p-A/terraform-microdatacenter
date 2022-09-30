@@ -40,3 +40,14 @@ provider "oci" {
 
   region = data.oci_identity_regions.home.regions[0].name
 }
+
+module "governance" {
+  source = "./modules/governance"
+  providers = {
+    oci = oci.home
+   }
+  
+  tenancy = data.oci_tenancy
+  name = "albe-test-terraform"
+  description = "Test for new terraform module"
+}
