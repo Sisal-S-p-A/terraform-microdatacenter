@@ -151,7 +151,7 @@ resource "oci_identity_policy" "operator" {
 resource "oci_identity_policy" "instance" {
   compartment_id = local.compartment.id
 
-  name = format("%s", local.instance.name)
+  name = format("%s", local.instances.name)
   description = format(
     "Grants rights on oracle cloud resources for instances in %s dynamic group.",
     local.instances.name
