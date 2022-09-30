@@ -48,7 +48,7 @@ resource "oci_identity_group" "admins" {
 resource "oci_identity_group" "operators" {
   compartment_id = local.tenancy.id
   description    = format("Operators of compartment %s", local.compartment.name)
-  name           = format("%s-opers", local.compartment.name)
+  name           = format("%s-operators", local.compartment.name)
 
   freeform_tags = merge({
     sisalcloud-rbac-role = "operator"
