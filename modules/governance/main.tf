@@ -149,24 +149,3 @@ resource "oci_identity_policy" "operator" {
     sisalcloud-group-ref = local.operators.id
   }, local.tags)
 }
-
-resource "oci_identity_policy" "instance" {
-  compartment_id = local.compartment.id
-
-  name = format("%s", local.instances.name)
-  description = format(
-    "Grants rights on oracle cloud resources for instances in %s dynamic group.",
-    local.instances.name
-  )
-
-  statements = [
-    format("Allow dynamic-group %s to inspect all-resources in comportament %s",
-      local.instances.name,
-      local.compartment.name
-    )
-  ]
-
-  freeform_tags = merge({
-    sisalcloud-group-ref = local.instances.id
-  }, local.tags)
-}
