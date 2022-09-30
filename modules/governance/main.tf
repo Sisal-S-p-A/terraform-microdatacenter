@@ -153,7 +153,7 @@ resource "oci_identity_policy" "operator" {
 resource "oci_identity_policy" "instance" {
   compartment_id = local.compartment.id
 
-  name = format("%s", local.instance.name)
+  name = format("%s", local.instances.name)
   description = format(
     "Grants rights to compute instances in dynamic group %s.",
     local.instances.name
