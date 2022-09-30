@@ -25,7 +25,7 @@ locals {
 }
 
 resource "oci_identity_compartment" "compartment" {
-  compartment_id = local.parent_compartment
+  compartment_id = local.tenancy.id
 
   name          = local.name
   description   = local.description

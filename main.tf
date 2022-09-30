@@ -47,7 +47,7 @@ module "governance" {
     oci = oci.home
    }
   
-  tenancy = data.oci_tenancy
+  tenancy = data.oci_identity_tenancy.oci_tenancy
   name = "albe-test-terraform"
   description = "Test for new terraform module"
 }
