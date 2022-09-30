@@ -21,7 +21,7 @@ locals {
 resource "oci_core_vcn" "vcn" {
   compartment_id = local.ctx.compartment.id
 
-  cidr_blocks  = ["10.0.0.0/8"]
+  cidr_blocks  = ["192.168.0.0/16"]
   display_name = local.ctx.compartment.name
 
   freeform_tags = merge({
