@@ -22,6 +22,7 @@ locals {
   compartment = oci_identity_compartment.compartment
   admins      = oci_identity_group.admins
   operators   = oci_identity_group.operators
+  instances = oci_identity_dynamic_group.instances
 }
 
 resource "oci_identity_compartment" "compartment" {
@@ -37,8 +38,9 @@ resource "oci_identity_compartment" "compartment" {
 
 resource "oci_identity_group" "admins" {
   compartment_id = local.tenancy.id
-  description    = format("Administrators of compartment %s", local.compartment.name)
+
   name           = format("%s-admins", local.compartment.name)
+  description    = format("Administrators of compartment %s", local.compartment.name)
 
   freeform_tags = merge({
     sisalcloud-rbac-role = "admin"
@@ -47,12 +49,26 @@ resource "oci_identity_group" "admins" {
 
 resource "oci_identity_group" "operators" {
   compartment_id = local.tenancy.id
-  description    = format("Operators of compartment %s", local.compartment.name)
+
   name           = format("%s-operators", local.compartment.name)
+  description    = format("Operators of compartment %s", local.compartment.name)
 
   freeform_tags = merge({
     sisalcloud-rbac-role = "operator"
   }, local.tags)
+}
+
+resource "oci_identity_dynamic_group" "instances" {
+    compartment_id = local.tenancy.id
+
+    name = format("%s-instances", local.compartment.name)
+    description = format("All Compute Instances in compartment %s", local.compartment.name)
+
+    matching_rule = format("instance.compartment.id = '%s'", local.compartment.id)
+
+    freeform_tags = merge({
+      sisalcloud-rbac-role = "instance"
+    }, local.tags)
 }
 
 resource "oci_identity_policy" "tenancy" {
@@ -129,5 +145,26 @@ resource "oci_identity_policy" "operator" {
 
   freeform_tags = merge({
     sisalcloud-group-ref = local.operators.id
+  }, local.tags)
+}
+
+resource "oci_identity_policy" "instance" {
+  compartment_id = local.compartment.id
+
+  name = format("%s", local.instance.name)
+  description = format(
+    "Grants rights on oracle cloud resources for instances in %s dynamic group.",
+    local.instances.name
+  )
+
+  statements = [
+    format("Allow dynamic group %s to inspect all-resources in comportament %s",
+      local.instances.name,
+      local.compartment.name
+    )
+  ]
+
+  freeform_tags = merge({
+    sisalcloud-group-ref = local.instances.id
   }, local.tags)
 }
