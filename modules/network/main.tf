@@ -24,19 +24,33 @@ resource "oci_core_vcn" "vcn" {
 }
 
 resource "oci_core_internet_gateway" "internet_gateway" {
-    compartment_id = local.vcn.compartment_id
-    vcn_id = local.vcn.id
+  compartment_id = local.vcn.compartment_id
+  vcn_id         = local.vcn.id
 
-    display_name = "Internet Gateway"
-    freeform_tags = merge({
-    }, local.vcn.freeform_tags)
+  display_name = "Internet Gateway"
+  freeform_tags = merge({
+  }, local.vcn.freeform_tags)
 }
 
 resource "oci_core_nat_gateway" "nat_gateway" {
-    compartment_id = local.vcn.compartment_id
-    vcn_id = local.vcn.id
+  compartment_id = local.vcn.compartment_id
+  vcn_id         = local.vcn.id
 
-    display_name = "NAT Gateway"
-    freeform_tags = merge({
-    }, local.vcn.freeform_tags)
+  display_name = "NAT Gateway"
+  freeform_tags = merge({
+  }, local.vcn.freeform_tags)
+}
+
+data "oci_core_services" "oci_services" {}
+resource "oci_core_service_gateway" "service_gateway" {
+  compartment_id = local.vcn.compartment_id
+  vcn_id         = local.vcn.id
+
+  display_name = data.oci_core_services.oci_services.services[0].description
+  services {
+    service_id = data.oci_core_services.oci_services.services[0].id
+  }
+
+  freeform_tags = merge({
+  }, local.vcn.freeform_tags)
 }
