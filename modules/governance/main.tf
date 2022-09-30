@@ -22,7 +22,7 @@ locals {
   compartment = oci_identity_compartment.compartment
   admins      = oci_identity_group.admins
   operators   = oci_identity_group.operators
-  instances = oci_identity_dynamic_group.instances
+  instances   = oci_identity_dynamic_group.instances
 }
 
 resource "oci_identity_compartment" "compartment" {
@@ -39,8 +39,8 @@ resource "oci_identity_compartment" "compartment" {
 resource "oci_identity_group" "admins" {
   compartment_id = local.tenancy.id
 
-  name           = format("%s-admins", local.compartment.name)
-  description    = format("Administrators of compartment %s", local.compartment.name)
+  name        = format("%s-admins", local.compartment.name)
+  description = format("Administrators of compartment %s", local.compartment.name)
 
   freeform_tags = merge({
     sisalcloud-rbac-role = "admin"
@@ -50,8 +50,8 @@ resource "oci_identity_group" "admins" {
 resource "oci_identity_group" "operators" {
   compartment_id = local.tenancy.id
 
-  name           = format("%s-operators", local.compartment.name)
-  description    = format("Operators of compartment %s", local.compartment.name)
+  name        = format("%s-operators", local.compartment.name)
+  description = format("Operators of compartment %s", local.compartment.name)
 
   freeform_tags = merge({
     sisalcloud-rbac-role = "operator"
@@ -59,16 +59,16 @@ resource "oci_identity_group" "operators" {
 }
 
 resource "oci_identity_dynamic_group" "instances" {
-    compartment_id = local.tenancy.id
+  compartment_id = local.tenancy.id
 
-    name = format("%s-instances", local.compartment.name)
-    description = format("All Compute Instances in compartment %s", local.compartment.name)
+  name        = format("%s-instances", local.compartment.name)
+  description = format("All Compute Instances in compartment %s", local.compartment.name)
 
-    matching_rule = format("instance.compartment.id = '%s'", local.compartment.id)
+  matching_rule = format("instance.compartment.id = '%s'", local.compartment.id)
 
-    freeform_tags = merge({
-      sisalcloud-rbac-role = "instance"
-    }, local.tags)
+  freeform_tags = merge({
+    sisalcloud-rbac-role = "instance"
+  }, local.tags)
 }
 
 resource "oci_identity_policy" "tenancy" {
@@ -85,20 +85,22 @@ resource "oci_identity_policy" "tenancy" {
       local.admins.name
     ),
 
+    format("Allow group %s to use groups in tenancy where target.group.name='%s'",
+      local.admins.name,
+      local.operators.name
+    ),
+
     format("Allow group %s to manage policies in tenancy where target.compartment.name='%s'",
       local.admins.name,
       local.compartment.name
     ),
+
     /* 
         format("Allow group %s to manage groups in tenancy where target.group.name='%s'",
             local.admins.name,
             local.admins.name
         ),
     */
-    format("Allow group %s to manage groups in tenancy where target.group.name='%s'",
-      local.admins.name,
-      local.operators.name
-    ),
   ]
 
   freeform_tags = merge({
@@ -158,7 +160,7 @@ resource "oci_identity_policy" "instance" {
   )
 
   statements = [
-    format("Allow dynamic group %s to inspect all-resources in comportament %s",
+    format("Allow dynamic-group %s to inspect all-resources in comportament %s",
       local.instances.name,
       local.compartment.name
     )
