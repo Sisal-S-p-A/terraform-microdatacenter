@@ -78,7 +78,7 @@ resource "oci_identity_policy" "tenancy" {
             local.admins.name,
             local.admins.name
         ),
- */
+    */
     format("Allow group %s to manage groups in tenancy where target.group.name='%s'",
       local.admins.name,
       local.operators.name
@@ -101,8 +101,8 @@ resource "oci_identity_policy" "admin" {
 
   statements = [
     format("Allow group %s to manage all-resources in compartment %s",
-        local.admins.name,
-        local.compartment.name
+      local.admins.name,
+      local.compartment.name
     )
   ]
 
@@ -122,8 +122,8 @@ resource "oci_identity_policy" "operator" {
 
   statements = [
     format("Allow group %s to use all-resources in compartment %s",
-        local.operators.name,
-        local.compartment.name
+      local.operators.name,
+      local.compartment.name
     )
   ]
 
