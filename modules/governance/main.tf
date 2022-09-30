@@ -9,7 +9,7 @@ terraform {
 }
 
 locals {
-  tenancy     = var.tenancy
+  tenancy     = var.context.tenancy
   name        = var.name
   description = var.description
 

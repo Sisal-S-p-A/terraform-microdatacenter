@@ -1,4 +1,4 @@
-variable "tenancy" {
+variable "context" {
     type = any
     description = "(Required) Tenancy's information [data.oci_identity_tenancy]."
   

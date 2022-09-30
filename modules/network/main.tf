@@ -11,6 +11,11 @@ terraform {
 locals {
   ctx = var.context
   vcn = oci_core_vcn.vcn
+  gateway = {
+    internet = oci_core_internet_gateway.internet_gateway
+    nat = oci_core_nat_gateway.nat_gateway
+    service = oci_core_service_gateway.service_gateway
+  }
 }
 
 resource "oci_core_vcn" "vcn" {
