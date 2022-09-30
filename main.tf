@@ -6,11 +6,6 @@ terraform {
       version = ">= 4"
     }
   }
-
-  oci-home = {
-    source  = "oracle/oci"
-    version = ">= 4"
-  }
 }
 
 provider "oci" {
