@@ -1,5 +1,5 @@
 variable "tenancy" {
-    type = map(any)
+    type = any
     description = "(Required) Tenancy's information [data.oci_identity_tenancy]."
   
 }
