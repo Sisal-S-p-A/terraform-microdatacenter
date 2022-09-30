@@ -51,3 +51,11 @@ module "governance" {
   name = "albe-test-terraform"
   description = "Test for new terraform module"
 }
+
+module "network" {
+  source = "./modules/network"
+
+  context = merge(data.oci_identity_tenancy.oci_tenancy, {
+    compartment = module.governance.compartment
+  })
+}
