@@ -41,6 +41,10 @@ provider "oci" {
   region = data.oci_identity_regions.home.regions[0].name
 }
 
+locals {
+  ctx = module.network.context
+}
+
 module "governance" {
   source = "./modules/governance"
   providers = {
