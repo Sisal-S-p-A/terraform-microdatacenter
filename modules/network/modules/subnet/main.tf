@@ -41,12 +41,12 @@ resource "oci_core_route_table" "route_table" {
   }
 
   dynamic "route_rules" {
-    for_each = local.public ? { } : { service = local.gateway.service }
+    for_each = local.public ? { } : local.gateway.service.services
     content {
-      description = route_rules.value.serivice.service_name
+      description = route_rules.value.service_name
 
       destination_type = "SERVICE_CIDR_BLOCK"
-      destination      = route_rules.value.serivice.cidr_block
+      destination      = route_rules.value.cidr_block
 
       network_entity_id = local.gateway.service.id
     }
