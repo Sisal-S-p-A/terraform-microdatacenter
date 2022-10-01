@@ -32,5 +32,17 @@ resource "oci_identity_compartment" "compartment" {
   defined_tags = merge(local.defined_tags, {
   })
   freeform_tags = merge(local.freeform_tags, {
+    managed-by = "Terraform Cloud"
   })
+}
+
+module "admins" {
+  source = "./modules/group"
+  providers = {
+    oci = oci
+  }
+
+  name               = format("%s-admins", local.compartment.name)
+  tenancy            = local.tenancy
+  target_compartment = local.compartment
 }
