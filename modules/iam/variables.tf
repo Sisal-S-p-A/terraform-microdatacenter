@@ -21,7 +21,7 @@ variable "description" {
 }
 
 variable "parent_compartment" {
-  type = object(any)
+  type = any
 
   description = "(Optional) data.oci_identity_compartment. If null Tenancy will be used."
   default     = null
