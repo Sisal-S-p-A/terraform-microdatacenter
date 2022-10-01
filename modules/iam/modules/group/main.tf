@@ -13,7 +13,7 @@ locals {
   name    = var.name
 
   description = coalesce(var.description, local.name)
-  compartment = coalesce(var.compartment, local.tenancy)
+  compartment = coalesce(var.target_compartment, local.tenancy)
 
   defined_tags = merge(
     local.tenancy.defined_tags,
