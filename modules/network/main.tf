@@ -79,15 +79,21 @@ module "subnet" {
   source = "./modules/subnet"
   providers = {
     oci = oci
-   }
+  }
 
-   context = merge(
-    {vcn = local.vcn, gateway = local.gateway},
-    local.ctx
-   )
+  context = merge(local.ctx,
+    {
+      vcn = merge(
+        local.vcn,
+        {
+          gateway = local.gateway
+        }
+      )
+    }
+  )
 
-   name = "test"
-   cidr = "192.168.0.0/24"
-   public = false
-  
+  name   = "test"
+  cidr   = "192.168.0.0/24"
+  public = false
+
 }
