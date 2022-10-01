@@ -51,9 +51,16 @@ resource "oci_core_service_gateway" "service_gateway" {
   compartment_id = local.vcn.compartment_id
   vcn_id         = local.vcn.id
 
-  display_name = data.oci_core_services.oci_services.services[0].description
-  services {
-    service_id = data.oci_core_services.oci_services.services[0].id
+  display_name = "Oracle Cloud Infrastructure Services network."
+
+  dynamic "services" {
+    for_each = { for service in data.oci_core_services.oci_services.services:
+      service.id => service
+    }
+
+    content {
+      service_id = services.key
+    }
   }
 
   freeform_tags = merge({
