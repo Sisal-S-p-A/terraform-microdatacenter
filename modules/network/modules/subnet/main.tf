@@ -41,7 +41,7 @@ resource "oci_core_route_table" "route_table" {
   }
 
   dynamic "route_rules" {
-    for_each = local.public ? toset({}) : local.gateway.service.services
+    for_each = local.public ? [] : local.gateway.service.services
     content {
       description = route_rules.value.service_name
 
