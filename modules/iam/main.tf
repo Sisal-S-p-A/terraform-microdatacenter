@@ -42,7 +42,13 @@ module "admins" {
     oci = oci
   }
 
-  name               = format("%s-admins", local.compartment.name)
+  name        = format("%s-admins", local.compartment.name)
+  description = format("Administrators group on %s compartment", local.compartment.name)
+
   tenancy            = local.tenancy
   target_compartment = local.compartment
+
+  freeform_tags = {
+    "sisalcloud-rbac-role" = "admin"
+  }
 }
