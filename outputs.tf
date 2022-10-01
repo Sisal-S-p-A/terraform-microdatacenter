@@ -1,3 +1,3 @@
 output "debug" {
-  value = module.tenancy.tenancy
+  value = module.iam.compartment
 }

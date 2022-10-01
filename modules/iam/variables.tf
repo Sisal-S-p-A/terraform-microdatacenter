@@ -1,5 +1,5 @@
 variable "tenancy" {
-  type = object(any)
+  type = any
 
   description = "(Required) Tenancy object."
   sensitive   = false
