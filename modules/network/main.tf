@@ -73,3 +73,17 @@ resource "oci_core_service_gateway" "service_gateway" {
   freeform_tags = merge({
   }, local.vcn.freeform_tags)
 }
+
+
+module "subnet" {
+  source = "./modules/subnet"
+  providers = {
+    oci = oci
+   }
+
+   context = local.ctx
+   name = "test"
+   cidr = "192.168.0.0/24"
+   public = false
+  
+}
