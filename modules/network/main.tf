@@ -13,8 +13,8 @@ locals {
   vcn = oci_core_vcn.vcn
   gateway = {
     internet = oci_core_internet_gateway.internet_gateway
-    nat = oci_core_nat_gateway.nat_gateway
-    service = oci_core_service_gateway.service_gateway
+    nat      = oci_core_nat_gateway.nat_gateway
+    service  = oci_core_service_gateway.service_gateway
   }
 }
 
@@ -46,7 +46,14 @@ resource "oci_core_nat_gateway" "nat_gateway" {
   }, local.vcn.freeform_tags)
 }
 
-data "oci_core_services" "oci_services" {}
+data "oci_core_services" "oci_services" {
+  filter {
+    name   = "name"
+    values = ["All .* Services In Oracle Services Network"]
+    regex  = true
+  }
+}
+
 resource "oci_core_service_gateway" "service_gateway" {
   compartment_id = local.vcn.compartment_id
   vcn_id         = local.vcn.id
@@ -54,7 +61,7 @@ resource "oci_core_service_gateway" "service_gateway" {
   display_name = "Oracle Cloud Infrastructure Services network."
 
   dynamic "services" {
-    for_each = { for service in data.oci_core_services.oci_services.services:
+    for_each = { for service in data.oci_core_services.oci_services.services :
       service.id => service
     }
 
