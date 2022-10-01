@@ -26,8 +26,8 @@ locals {
 resource "oci_identity_compartment" "compartment" {
   compartment_id = local.parent.id
 
-  name        = var.compartment_name
-  description = var.compartment_description
+  name        = local.name
+  description = local.description
 
   defined_tags = merge(local.defined_tags, {
   })
