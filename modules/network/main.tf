@@ -81,7 +81,11 @@ module "subnet" {
     oci = oci
    }
 
-   context = local.ctx
+   context = merge(
+    {vcn = local.vcn, gateway = local.gateway},
+    local.ctx
+   )
+
    name = "test"
    cidr = "192.168.0.0/24"
    public = false
