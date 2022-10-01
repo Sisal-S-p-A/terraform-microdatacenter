@@ -15,6 +15,7 @@ locals {
 
 locals {
     vcn = oci_core_vcn.vcn
+    service_gateway = module.service_gateway.gateway
 }
 
 resource "oci_core_vcn" "vcn" {
@@ -27,4 +28,13 @@ resource "oci_core_vcn" "vcn" {
 
     freeform_tags = merge(local.compartment.freeform_tags, {
     })
+}
+
+module "service_gateway" {
+  source = "./modules/service_gateway"
+  providers = {
+    oci = oci
+   }
+
+   context = local.ctx
 }
