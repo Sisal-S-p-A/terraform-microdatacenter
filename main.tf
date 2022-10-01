@@ -50,3 +50,14 @@ module "tenancy" {
   oci_tenancy_id = var.oci_tenancy_id
   target_region  = var.oci_region_name
 }
+
+module "iam" {
+  source = "./modules/iam"
+  providers = {
+    oci = oci.home
+  }
+
+  tenancy     = module.tenancy.tenancy
+  name        = "albe-test-terraform"
+  description = "Albe Test Terraform"
+}
