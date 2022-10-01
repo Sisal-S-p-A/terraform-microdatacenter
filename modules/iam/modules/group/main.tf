@@ -13,17 +13,17 @@ locals {
   name    = var.name
 
   description = coalesce(var.description, local.name)
-  compartment = coalesce(var.target_compartment, local.tenancy)
+  compartment = var.target_compartment
 
   defined_tags = merge(
     local.tenancy.defined_tags,
-    local.compartment.defined_tags,
+    try(local.compartment.defined_tags, {}),
     var.defined_tags
   )
 
   freeform_tags = merge(
     local.tenancy.freeform_tags,
-    local.compartment.freeform_tags,
+    try(local.compartment.freeform_tags, {}),
     var.freeform_tags
   )
 }
