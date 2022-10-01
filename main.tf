@@ -57,6 +57,9 @@ module "governance" {
 
 module "network" {
   source = "./modules/network"
+  providers = {
+    oci = oci
+   }
 
   context = module.governance.context
 }
