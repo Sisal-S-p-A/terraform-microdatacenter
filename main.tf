@@ -54,3 +54,13 @@ module "governance" {
   name        = "albe-test-terraform"
   description = "Test for new terraform module"
 }
+
+module "network" {
+  source = "./modules/network"
+  providers = {
+    oci = oci
+  }
+
+  context = module.governance.context
+
+}
