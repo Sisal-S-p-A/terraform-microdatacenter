@@ -1,3 +1,3 @@
-output "context" {
-  value = local.ctx
+output "debug" {
+  value = module.tenancy.tenancy
 }
