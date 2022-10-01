@@ -41,30 +41,12 @@ provider "oci" {
   region = data.oci_identity_regions.home.regions[0].name
 }
 
-locals {
-  ctx = module.network.context
-}
-
-module "governance" {
-  source = "./modules/governance"
+module "tenancy" {
+  source = "./modules/tenancy"
   providers = {
     oci = oci.home
   }
 
-  context = {
-    tenancy = data.oci_identity_tenancy.oci_tenancy
-  }
-
-  name        = "albe-test-terraform"
-  description = "Test for new terraform module"
-}
-
-module "network" {
-  source = "./modules/network"
-  providers = {
-    oci = oci
-  }
-
-  context = module.governance.context
-
+  oci_tenancy_id = var.oci_tenancy_id
+  target_region  = var.oci_region_name
 }
