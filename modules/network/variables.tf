@@ -1,3 +1,0 @@
-variable "context" {
-  type = any
-}
