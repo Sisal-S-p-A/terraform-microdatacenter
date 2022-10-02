@@ -48,6 +48,11 @@ module "admins" {
   tenancy            = local.tenancy
   target_compartment = local.compartment
 
+  grants = [{
+    rights = "manage",
+    resource = "all-resources"
+  }]
+
   freeform_tags = {
     "sisalcloud-rbac-role" = "admin"
   }

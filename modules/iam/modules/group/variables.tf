@@ -17,7 +17,14 @@ variable "grants" {
     resource = string
     rights = string
   }))
+
+  default = [ {
+    resource = "all-resources"
+    rights = "inspect"
+  } ]
   
+  description = "(Optional) Define rights level (inspect, read, use or manage) for provided resource type (default all-resources)."
+  sensitive = false
 }
 
 variable "target_compartment" {
