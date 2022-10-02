@@ -97,7 +97,7 @@ resource "oci_identity_policy" "admin_tenancy" {
   compartment_id = local.tenancy.id
 
   name        = local.name
-  description = format("Grants needed rights to comparment %s administrators at tenency level.")
+  description = format("Grants needed rights to comparment %s administrators at tenency level.", local.comparment.name)
 
   statements = [
     format("Allow group %s to use users in tenancy",
