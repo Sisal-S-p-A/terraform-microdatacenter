@@ -47,7 +47,7 @@ resource "oci_identity_group" "group" {
 }
 
 resource "oci_identity_policy" "policy" {
-  compartment_id = var.tenancy_ocid
+  compartment_id = local.tenancy.id
 
   name        = local.name
   description = format("Grants rights to group %s.", local.name)
