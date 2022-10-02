@@ -96,24 +96,24 @@ module "groups" {
 resource "oci_identity_policy" "admin_tenancy" {
   compartment_id = local.tenancy.id
 
-  name = local.name
+  name        = local.name
   description = format("Grants needed rights to comparment %s administrators at tenency level.")
 
-statements = [
-  format("Allow group %s to use users in tenancy",
-    module.groups.admins.group.name
-  ),
+  statements = [
+    format("Allow group %s to use users in tenancy",
+      module.groups.admins.group.name
+    ),
 
-  format("Allow group %s to manage group in tenancy where target.group.name = '%s'",
-    module.groups.admins.group.name,
-    module.groups.admins.group.name,
-  ),
+    format("Allow group %s to manage group in tenancy where target.group.name = '%s'",
+      module.groups.admins.group.name,
+      module.groups.admins.group.name,
+    ),
 
-  format("Allow group %s to manage policies in compartment %s",
-    module.groups.admins.group.name,
-    local.comparment.name
-  ),
-]
+    format("Allow group %s to manage policies in compartment %s",
+      module.groups.admins.group.name,
+      local.compartment.name
+    ),
+  ]
 
   defined_tags = merge(local.defined_tags, {
   })
