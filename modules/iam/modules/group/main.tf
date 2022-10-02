@@ -32,10 +32,11 @@ locals {
 
 locals {
   group = oci_identity_group.group
+  policy = oci_identity_policy.policy
 }
 
 resource "oci_identity_group" "group" {
-  compartment_id = local.tenancy.id
+  compartment_id = local.compartment.id
 
   name        = local.name
   description = local.description

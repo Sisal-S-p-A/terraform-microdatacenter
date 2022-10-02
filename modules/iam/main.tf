@@ -92,3 +92,16 @@ module "groups" {
 
   freeform_tags = each.value.freeform_tags
 }
+
+resource "oci_identity_policy" "admin_tenancy" {
+  compartment_id = local.tenancy.id
+
+  name = local.name
+  description = format("Grants needed rights to comparment %s administrators at tenency level.")
+
+  defined_tags = merge(local.defined_tags, {
+  })
+  freeform_tags = merge(local.freeform_tags, {
+    sisalcloud-rbac-role = "admin"
+  })
+}
