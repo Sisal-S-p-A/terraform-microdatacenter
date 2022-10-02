@@ -12,6 +12,14 @@ variable "name" {
   sensitive   = false
 }
 
+variable "grants" {
+  type = list(object({
+    resource = string
+    rights = string
+  }))
+  
+}
+
 variable "target_compartment" {
     type = any
     default = null

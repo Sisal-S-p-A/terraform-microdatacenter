@@ -26,6 +26,8 @@ locals {
     try(local.compartment.freeform_tags, {}),
     var.freeform_tags
   )
+
+  grants = var.grants
 }
 
 locals {
@@ -37,6 +39,27 @@ resource "oci_identity_group" "group" {
 
   name        = local.name
   description = local.description
+
+  defined_tags = merge(local.defined_tags, {
+  })
+  freeform_tags = merge(local.freeform_tags, {
+  })
+}
+
+resource "oci_identity_policy" "policy" {
+  compartment_id = var.tenancy_ocid
+
+  name        = local.name
+  description = format("Grants rights to group %s.", local.name)
+
+  statements = [for grants in local.grants :
+    format("Allow group %s to %s %s in compartment %s",
+      local.name,
+      grants.rights,
+      grants.resource,
+      local.compartment.name
+    )
+  ]
 
   defined_tags = merge(local.defined_tags, {
   })
