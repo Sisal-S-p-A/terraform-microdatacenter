@@ -104,7 +104,7 @@ resource "oci_identity_policy" "admin_tenancy" {
       module.groups["admins"].group.name
     ),
 
-    format("Allow group %s to manage group in tenancy where target.group.name='%s'",
+    format("Allow group %s to manage groups in tenancy where target.group.name='%s'",
       module.groups["admins"].group.name,
       module.groups["operators"].group.name,
     ),
