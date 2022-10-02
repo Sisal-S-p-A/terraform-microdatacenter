@@ -36,7 +36,7 @@ resource "oci_identity_compartment" "compartment" {
   })
 }
 
-module "admins" {
+/* module "admins" {
   source = "./modules/group"
   providers = {
     oci = oci
@@ -49,7 +49,50 @@ module "admins" {
   target_compartment = local.compartment
 
   grants = [{
-    rights = "manage",
+    rights   = "manage",
+    resource = "all-resources"
+  }]
+
+  freeform_tags = {
+    "sisalcloud-rbac-role" = "admin"
+  }
+} */
+
+locals {
+  groups = {
+    admins = {
+      name        = format("%s-admins", local.compartment.name)
+      description = format("Administrators group on %s compartment", local.compartment.name)
+
+      tenancy            = local.tenancy
+      target_compartment = local.compartment
+
+      grants = [{
+        rights   = "manage",
+        resource = "all-resources"
+      }]
+
+      freeform_tags = {
+        "sisalcloud-rbac-role" = "admin"
+      }
+    }
+  }
+}
+
+/* module "groups" {
+  source = "./modules/group"
+  providers = {
+    oci = oci
+  }
+
+  name        = format("%s-admins", local.compartment.name)
+  description = format("Administrators group on %s compartment", local.compartment.name)
+
+  tenancy            = local.tenancy
+  target_compartment = local.compartment
+
+  grants = [{
+    rights   = "manage",
     resource = "all-resources"
   }]
 
@@ -57,3 +100,4 @@ module "admins" {
     "sisalcloud-rbac-role" = "admin"
   }
 }
+ */
