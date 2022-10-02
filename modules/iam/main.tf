@@ -36,28 +36,6 @@ resource "oci_identity_compartment" "compartment" {
   })
 }
 
-/* module "admins" {
-  source = "./modules/group"
-  providers = {
-    oci = oci
-  }
-
-  name        = format("%s-admins", local.compartment.name)
-  description = format("Administrators group on %s compartment", local.compartment.name)
-
-  tenancy            = local.tenancy
-  target_compartment = local.compartment
-
-  grants = [{
-    rights   = "manage",
-    resource = "all-resources"
-  }]
-
-  freeform_tags = {
-    "sisalcloud-rbac-role" = "admin"
-  }
-} */
-
 locals {
   groups = {
     admins = {
@@ -76,28 +54,41 @@ locals {
         "sisalcloud-rbac-role" = "admin"
       }
     }
+
+    operators = {
+      name        = format("%s-operators", local.compartment.name)
+      description = format("Operators group on %s compartment", local.compartment.name)
+
+      tenancy            = local.tenancy
+      target_compartment = local.compartment
+
+      grants = [{
+        rights   = "use",
+        resource = "all-resources"
+      }]
+
+      freeform_tags = {
+        "sisalcloud-rbac-role" = "operator"
+      }
+    }
   }
 }
 
-/* module "groups" {
+module "groups" {
+  for_each = local.groups
+
   source = "./modules/group"
   providers = {
     oci = oci
   }
 
-  name        = format("%s-admins", local.compartment.name)
-  description = format("Administrators group on %s compartment", local.compartment.name)
+  name        = each.value.name
+  description = each.value.description
 
-  tenancy            = local.tenancy
-  target_compartment = local.compartment
+  tenancy            = each.value.tenancy
+  target_compartment = each.value.target_compartment
 
-  grants = [{
-    rights   = "manage",
-    resource = "all-resources"
-  }]
+  grants = each.value.grants
 
-  freeform_tags = {
-    "sisalcloud-rbac-role" = "admin"
-  }
+  freeform_tags = each.value.freeform_tags
 }
- */
