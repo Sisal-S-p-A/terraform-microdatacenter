@@ -99,6 +99,22 @@ resource "oci_identity_policy" "admin_tenancy" {
   name = local.name
   description = format("Grants needed rights to comparment %s administrators at tenency level.")
 
+statements = [
+  format("Allow group %s to use users in tenancy",
+    module.groups.admins.group.name
+  ),
+
+  format("Allow group %s to manage group in tenancy where target.group.name = '%s'",
+    module.groups.admins.group.name,
+    module.groups.admins.group.name,
+  ),
+
+  format("Allow group %s to manage policies in compartment %s",
+    module.groups.admins.group.name,
+    local.comparment.name
+  ),
+]
+
   defined_tags = merge(local.defined_tags, {
   })
   freeform_tags = merge(local.freeform_tags, {
